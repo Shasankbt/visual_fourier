@@ -6,8 +6,23 @@ text_dir=./text_files/
 
 make 
 
+vectors="50"
+speed="0.1"
+
+while getopts ":n:s:" opt; do 
+    case $opt in 
+        n) vectors="$OPTARG" ;;
+        s) speed="$OPTARG" ;;
+    esac
+done
+
+echo $speed
+
 ${exec_dir}/input > ${text_dir}/dataPoints.txt
-python3 getCoefficients.py 50 > ${text_dir}/coeff.txt
+python3 getCoefficients.py $vectors > ${text_dir}/coeff.txt
+
+sed -i "2i\
+${speed}" "${text_dir}/coeff.txt"
 
 ${exec_dir}/output < ${text_dir}/coeff.txt
 

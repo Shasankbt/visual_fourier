@@ -16,14 +16,14 @@ dataCount = 0
 
 arguments = sys.argv    # getting the count of frequencies
 if len(arguments) == 1:
-    n = 11  #deffault : c[-10],..,c[0],c[1],..,c[10]
+    n = 51  #default : c[-50],..,c[0],c[1],..,c[50]
 elif len(arguments) == 2:
     n = int(arguments[1]) + 1
-    if n <= -1:
-        print("give valid subset size (>=0)")
-        exit()
+    if n <= 0:
+        sys.stderr.write("give valid subset size (>=0)")
+        exit(1)
 else :
-    print(f"correct command \n")
+    print(f"give the correct command \n format : $ python3 getCoefficients.py (n)[optional, default = 10]")
 
 # ---------------------- taking input from file -------------------
 

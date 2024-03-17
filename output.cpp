@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iostream>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -36,11 +37,12 @@ struct Rotvec {
 
 vector<Rotvec> vec;
 vector<std::pair<float, float>> pathPoints;
+double speed;
 int n;
 double curr_time = 0 ;
 
 void display() {
-    curr_time += 0.001  ;
+    curr_time += 0.005 * speed;
     for(int i =0; i<2*n+1; i++) vec[i].animateTo(curr_time);
 
     glClear(GL_COLOR_BUFFER_BIT);
@@ -62,6 +64,31 @@ void display() {
     }
     glEnd();
 
+    // display speed
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glRasterPos2d(1650,50);
+
+    string display_speed = "speed : "; display_speed += to_string(speed);
+    for (char character : display_speed) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, character);
+    }
+
+    //display vectors
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glRasterPos2d(1650,75);
+    string display_n = "no of vectors : "; display_n += to_string(2*n-1);
+    for (char character : display_n) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, character);
+    }
+
+    //display time
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glRasterPos2d(1650,100);
+    string display_time = "time elapsed : "; display_time += to_string(curr_time);
+    for (char character : display_time) {
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, character);
+    }
+
     glutSwapBuffers();
 }
 
@@ -73,14 +100,14 @@ void timer(int value) {
     glutPostRedisplay();
 
     // Register the timer function to be called again after 0.05 seconds
-    glutTimerFunc(50, timer, 0);
+    glutTimerFunc(5, timer, 0);
 }
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(1920, 1080);
-    glutCreateWindow("Forier Transformation");
+    glutCreateWindow("Fourier Transformation");
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -91,6 +118,7 @@ int main(int argc, char** argv) {
     
     //cout<<"enter the index 'n' in c(-n),...,c(0),c(1),...,c(n) : ";
     cin>>n;
+    cin>>speed;
 
     // assign the values (inputting from the terminal)
     vec.reserve(2*n+1); //to avoid reallocation when pushing back

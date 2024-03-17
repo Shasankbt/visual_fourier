@@ -17,7 +17,7 @@ if len(arguments) == 1:
 if len(arguments) == 2:
     subsetLength = int(arguments[1])
     if subsetLength <= 1:
-        print("give valid subset size (>1)")
+       sys.stderr.write("give valid subset size (>1)")
 
 
 # --------------------- extracting and prepping matrix ---------------------------------
