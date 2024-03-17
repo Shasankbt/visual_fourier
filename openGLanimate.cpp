@@ -5,7 +5,7 @@
 
 using namespace std;
 
-vector<std::pair<float, float>> pathPoints;
+
 
 
 struct Rotvec {
@@ -18,13 +18,17 @@ struct Rotvec {
 
     Rotvec() {}
 
-    Rotvec(double tmprd, double r, double p, Rotvec *prvc) : time_period(tmprd), rad(r), phase(p), prevVecPtr(prvc) {
+    Rotvec(double tmprd, double r, double p, Rotvec * prvc) : time_period(tmprd), rad(r), phase(p), prevVecPtr(prvc) {
         if (prvc != nullptr) {
             centre[0] = prevVecPtr->x;
             centre[1] = prevVecPtr->y;
         } else {
             centre[0] = centre[1] = 0.0;
         }
+        x = centre[0]+ rad * cos(p);
+        y = centre[1] + rad * sin(p);
+
+        //cout<<x<<" "<<y<<",";
     }
 
     void animateTo(double current_time) {
@@ -38,21 +42,25 @@ struct Rotvec {
     }
 };
 
-Rotvec vec[99];
+vector<std::pair<float, float>> pathPoints;
+vector<Rotvec> vec;
+int n;
 
 double curr_time = 0 ;
 
 void display() {
+
+    //pathPoints.clear();
+
     curr_time += 0.001  ;
-    for(int i =0; i<2*49+1; i++) vec[i].animateTo(curr_time);
+    for(int i =1; i<2*n+1; i++) vec[i].animateTo(curr_time);
 
     glClear(GL_COLOR_BUFFER_BIT);
 
     
     glColor3f(0.4f, 0.4f, 0.4f);
     glBegin(GL_LINES);
-    for (int i = 1; i < 99; ++i) {
-        //vec[i].animateTo(curr_time);
+    for (int i = 1; i < 2*n+1; ++i) {
         glVertex2f(vec[i].centre[0], vec[i].centre[1]);
         glVertex2f(vec[i].x, vec[i].y);
     }
@@ -66,16 +74,17 @@ void display() {
     }
     glEnd();
 
+    // for(int i=0; i<99; i++) cout<<"start:"<<vec[i].x<<" "<<vec[i].y<<",";
+    // cout<<endl;
+    // cout<<endl;
+
     //glFlush();
     glutSwapBuffers();
-
-    //glutPostRedisplay();
 }
 
 void timer(int value) {
     // Do something after 0.05 seconds
-
-    pathPoints.push_back(std::make_pair(vec[98].x, vec[98].y));
+    pathPoints.push_back(std::make_pair(vec[2*n].x, vec[2*n].y));
 
     // Request redisplay to update the screen
     glutPostRedisplay();
@@ -96,36 +105,28 @@ int main(int argc, char** argv) {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     
-    int n = 49;
-    // cout<<"enter n "<<endl;
-    // cin>>n;
+    cout<<"enter n ( c[-n],...,c[0],c[1],...,c[n]) :";
+    cin>>n;
 
     {
         double r , p;
         std::cin>>r>>p;
-        vec[0] = Rotvec(0 ,r, p , nullptr);
+        vec.push_back(Rotvec(0 ,r, p , nullptr));
     }
 
     for(int i = 1; i < n+1; i++){
         double r , p;
         std::cin>>r>>p;
-        vec[2*i-1] = Rotvec(i ,r, p , &vec[2*i-2]);
+        vec.push_back(Rotvec(i ,r, p , &vec[2*i-2]));
         std::cin>>r>>p;
-        vec[2*i] = Rotvec((-1)*i ,r, p , &vec[2*i-1]);
+        vec.push_back(Rotvec((-1)*i ,r, p , &vec[2*i-1]));
     }
 
-    //double curr_time = 0.0;
-
-    cout<<"here2"<<endl;
+    for(int i=0; i<99; i++) cout<<"start:"<<vec[i].x<<" "<<vec[i].y<<",";
+    cout<<endl;
 
     glutDisplayFunc(display);
     glutTimerFunc(50, timer, 0);
-    cout<<"here1"<<endl;
     glutMainLoop();
-    cout<<"here4"<<endl;
-    
-
-    
-
     return 0;
 }
