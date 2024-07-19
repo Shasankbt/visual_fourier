@@ -1,6 +1,6 @@
 CC = g++
 
-Simplecpp = /home/shasankbt/simplecpp
+Simplecpp = ./simplecpp
 SCPP = -I$(Simplecpp)/include -L$(Simplecpp)/lib -lsprite -lX11
 
 GLUT = -lGL -lGLU -lglut

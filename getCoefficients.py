@@ -12,7 +12,6 @@ import math
 import sys
 
 dataPoints = []
-dataCount = 0 
 
 arguments = sys.argv    # getting the count of frequencies
 if len(arguments) == 1:
@@ -33,9 +32,9 @@ with open("text_files/dataPoints.txt", "rt") as file:
         real, imag = map(int, line.split(','))
         num = complex(real, imag)
         dataPoints.append(complex(real, imag))
-        dataCount += 1
 
-# # complex numbers in the input file:
+
+# # complex numbers in the input file (#commented out):
 # with open("filteredData.txt", "rt") as file:
 #     for line in file:
 #         dataPoints.append(complex(line))
@@ -44,6 +43,7 @@ with open("text_files/dataPoints.txt", "rt") as file:
 # ------------------------ colculating coefficients ------------------------------------------
 
 data = np.array(dataPoints)
+dataCount = data.shape[0]
 pi = math.pi
 
 multiplier = []
@@ -56,7 +56,7 @@ for i in range(-n, n+1):
 multiplier = np.array(multiplier)
 coeff = (1/dataCount) *  np.dot(multiplier, data)
 
-# --------------------- converting the coefficients into polar form & output-----------------------
+# --------------------- converting the coefficients into polar form & outputting -----------------------
 def polar(num):
     mod = math.sqrt( pow(num.real,2) + pow(num.imag,2) )
     if num.imag > 0:
@@ -67,7 +67,7 @@ def polar(num):
     return str(mod) + " " + str(phase)
 
 
-# writing to a file :
+# # writing to a file :
 # coefficientFile = open("text_files/coeff.txt", "wt")
 
 # coefficientFile.write(polar(coeff[n]))
