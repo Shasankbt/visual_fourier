@@ -12,5 +12,11 @@ DESCRIPTION:
      different frequencies and phases
 
 TO RUN:
-  1. run in terminal by ` bash run.sh `
-  2. draw any path in the canvas
+  1. run the default in terminal by `bash run.sh ` *(number of vectors : 101, speed : 0.1s)*
+  2. adjust the number of vectors and the speed scale (can be adjusted for viewing) by using flags `-n` and `-s` respectively
+      eg : to use 21 vectors and to run at 1 second per loop, run `bash run.sh -n 10 -s 1` *(note that number of vectors = 2*n+1)*
+  3. draw any path in the canvas
+
+DEBUG:
+  1. if the executable is not in the repo, run `make`. This will store the executables from C++ to the `object_files/` directory
+  2. if issues in compiling C++ code due to simplecpp, go to `simplecpp/` and then run `bash configure.sh` 
