@@ -12,6 +12,5 @@ DESCRIPTION:
      different frequencies and phases
 
 TO RUN:
-  1. run in terminal by [ bash run.sh ]
+  1. run in terminal by ` bash run.sh `
   2. draw any path in the canvas
-  `3. wait for computation ig`
